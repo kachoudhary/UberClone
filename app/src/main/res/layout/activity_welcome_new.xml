@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/baselayout"
+    tools:context=".welcome_new"
+    android:weightSum="10.00"
+    android:orientation="vertical"
+    >
+
+    <fragment
+        xmlns:map="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="9.50"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_weight="0.50"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
+        android:textAlignment="center"
+        android:weightSum="3.0">
+
+    <Switch
+       android:id="@+id/location_switch"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_weight="0.5" />
+    <Button
+        android:layout_weight="2.5"
+        android:layout_gravity="center_vertical"
+        android:textAlignment="center"
+        android:gravity="center_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Call Uber"
+        android:id="@+id/ubertbn" />
+
+    </LinearLayout>
+
+</LinearLayout>
