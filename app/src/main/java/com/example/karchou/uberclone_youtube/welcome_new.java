@@ -19,8 +19,13 @@ import com.example.karchou.uberclone_youtube.Remote.iGoogleAPI;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -99,8 +104,7 @@ public class welcome_new extends FragmentActivity implements OnMapReadyCallback 
     private double lat,lng;
     private Handler handler;
     private int index,next;
-    private Button btnGo;
-    private EditText edtplace;
+    private PlaceAutocompleteFragment places;
     private String destination;
     private PolylineOptions polylineOptions, blackPolylineOptions;
     private Polyline blackPolyline, greyPolyline;
@@ -195,18 +199,26 @@ public class welcome_new extends FragmentActivity implements OnMapReadyCallback 
         });
 
         polylinelist=new ArrayList<>();
-        btnGo=(Button)findViewById(R.id.btnGo);
-        edtplace=(EditText)findViewById(R.id.edittxty);
-
-
-        btnGo.setOnClickListener(new View.OnClickListener() {
+        places=(PlaceAutocompleteFragment)getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+        places.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
-            public void onClick(View v) {
-                destination=edtplace.getText().toString();
-                destination=destination.replace("","+");
-                getDirection();
+            public void onPlaceSelected(Place place) {
+                if (location_switch.isChecked()) {
+                    destination = place.getAddress().toString();
+                    destination = destination.replace("", "+");
+                    getDirection();
+                }
+                else {
+                    Toast.makeText(welcome_new.this,"You are Offline",Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onError(Status status) {
+              Toast.makeText(welcome_new.this,"Error: "+status.toString(),Toast.LENGTH_SHORT).show();
             }
         });
+
 
         drivers=FirebaseDatabase.getInstance().getReference("Drivers");
         geoFire=new GeoFire(drivers);
