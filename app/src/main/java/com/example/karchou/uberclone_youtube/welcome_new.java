@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 
 import android.location.Location;
-import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
@@ -34,14 +33,20 @@ import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
 
 
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class welcome_new extends FragmentActivity implements OnMapReadyCallback {
@@ -70,6 +75,19 @@ public class welcome_new extends FragmentActivity implements OnMapReadyCallback 
     private static int FASTES_INTERVAL=3000;
     private static int DISPLACEMENT=10;
 
+    private List<LatLng> polylinelist;
+    private Marker pickupLocationMarker;
+    private float v;
+    private double lat,lng;
+    private Handler handler;
+    private int index,next;
+    private Button btnGo;
+    private EditText edtplace;
+    private String destination;
+    private PolylineOptions polylineOptions, blackPolylineOptions;
+    private Polyline blackPolyline, greyPolyline;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,8 +99,7 @@ public class welcome_new extends FragmentActivity implements OnMapReadyCallback 
 
         uberbtn=(Button)findViewById(R.id.uberbtn);
         location_switch=(Switch)findViewById(R.id.location_switch);
-        drivers=FirebaseDatabase.getInstance().getReference("Drivers");
-        geoFire=new GeoFire(drivers);
+
 
         location_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -101,6 +118,12 @@ public class welcome_new extends FragmentActivity implements OnMapReadyCallback 
                 }
             }
         });
+
+        polylinelist=new ArrayList<>();
+
+
+        drivers=FirebaseDatabase.getInstance().getReference("Drivers");
+        geoFire=new GeoFire(drivers);
     }
 
     private void getDirection() {
@@ -219,11 +242,11 @@ public class welcome_new extends FragmentActivity implements OnMapReadyCallback 
                         if (mCurrent != null)
                             mCurrent.remove();
 
-                        mCurrent = mMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.car))
+                        mCurrent = mMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.carertical))
                                 .position(new LatLng(latittude, longitude))
                                 .title("You"));
                         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latittude, longitude), 15.0f));
-                        rotateMarker(mCurrent, -360, mMap);
+                        //rotateMarker(mCurrent, -360, mMap);
                     }
                 });
             }

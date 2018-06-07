@@ -2,5 +2,4 @@
     <string name="app_name">UberClone_youtube</string>
     <string name="title_activity_welcome">Map</string>
     <string name="title_activity_welcome_new">Map</string>
-    <!--<string name="google_direction_api">AIzaSyCPltAKRxFw3ha9vqgDLUnTR4TCRQMgkEw</string>-->
 </resources>
