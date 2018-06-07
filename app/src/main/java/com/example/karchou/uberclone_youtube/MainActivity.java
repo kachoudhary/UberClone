@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.example.karchou.uberclone_youtube.model.User;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -118,7 +119,7 @@ public class MainActivity extends Activity {
                            @Override
                            public void onFailure(@NonNull Exception e) {
                                waitingdialog.dismiss();
-                               Snackbar.make(relativeLayout,"Failed : "+e.getMessage(),Snackbar.LENGTH_SHORT).show();
+                               Toast.makeText(MainActivity.this,"Failed : "+e.getMessage(),Toast.LENGTH_SHORT).show();
                                btnsignin.setEnabled(true);
                            }
                 });
